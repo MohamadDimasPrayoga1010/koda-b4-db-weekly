@@ -2,7 +2,7 @@
 ```mermaid
 erDiagram
 
-users {
+users { 
     bigint id PK
     varchar(100) fullname
     varchar(100) email
