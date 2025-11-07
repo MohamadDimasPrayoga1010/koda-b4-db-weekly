@@ -80,15 +80,25 @@ CREATE TABLE payment_methods(
     updated_at TIMESTAMP DEFAULT now()
 );
 
-CREATE TABLE orders(
+CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
     user_id BIGINT REFERENCES users(id),
     payment_method BIGINT REFERENCES payment_methods(id),
-    delevery VARCHAR(100) NOT NULL,
+    shipping_id BIGINT REFERENCES shippings(id),
     no_orders VARCHAR(50),
     total NUMERIC NOT NULL,
-    status VARCHAR(50) NOT NULL,
+    status_id BIGINT REFERENCES status(id),
     created_at TIMESTAMP DEFAULT now()
+); 
+
+CREATE TABLE shippings (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE status (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(20) NOT NULL UNIQUE
 );
 
 CREATE TABLE sizes(
