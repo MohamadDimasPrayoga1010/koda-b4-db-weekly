@@ -1,6 +1,8 @@
-# ERD COFFESHOP
+# ERD COFFEE SHOP
+
 ```mermaid
 erDiagram
+
 
 users { 
     bigint id PK
@@ -22,6 +24,14 @@ profile {
     timestamp updated_at
 }
 
+forgot_password {
+    bigint id PK
+    bigint user_id FK
+    varchar(100) token
+    timestamp expires_at
+    timestamp created_at
+}
+
 variants {
     bigint id PK
     varchar(100) name
@@ -32,6 +42,12 @@ categories {
     varchar(100) name
     timestamp created_at
     timestamp updated_at
+}
+
+sizes {
+    bigint id PK
+    varchar(100) name
+    numeric additional_price
 }
 
 products {
@@ -53,6 +69,7 @@ products_categories {
 }
 
 product_images {
+    bigint id PK
     bigint product_id FK
     varchar(250) image
     timestamp updated_at
@@ -84,21 +101,26 @@ payment_methods {
     timestamp updated_at
 }
 
+shippings {
+    bigint id PK
+    varchar(50) name
+}
+
+status {
+    bigint id PK
+    varchar(20) name
+}
+
 orders {
     bigint id PK
     bigint user_id FK
     bigint payment_method FK
+    bigint shipping_id FK
+    bigint status_id FK
     varchar(100) delivery
     varchar(50) no_orders
     numeric total
-    varchar(50) status
     timestamp created_at
-}
-
-sizes {
-    bigint id PK
-    varchar(100) name
-    numeric additional_price
 }
 
 orders_products {
@@ -114,19 +136,26 @@ product_sizes {
 }
 
 users ||--|| profile : "has"
+users ||--|| forgot_password : "has"
 users ||--o{ orders : "makes"
+
 orders ||--|| payment_methods : "uses"
+orders ||--|| shippings : "ships via"
+orders ||--|| status : "has"
 orders ||--o{ orders_products : "contains"
-orders_products ||--o{ sizes : "has size"
+
+orders_products ||--|| sizes : "has size"
 products ||--o{ orders_products : "includes"
 products ||--o{ product_sizes : "has size option"
+
 products ||--o{ products_categories : "belongs to"
 products_categories ||--|| categories : "categorizes"
+
 products ||--o{ product_images : "has image"
 products ||--o{ product_promos : "linked to"
 product_promos ||--|| promos : "applies promo"
+
 variants ||--o{ products : "has variant"
 
 
- 
 ```
